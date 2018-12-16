@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h2.display-4.m-b-2 Add Product
+        // register form
+        form(method='POST' action='/products')
+          div.form-group
+            label(for='productName') Product name:
+            input#productName.form-control(type='text' name='productName')
+          div.form-group
+            label(for='productId') Product id:
+            input#productId.form-control(type='text' name='productId')
+          div.form-group
+            label(for='userName') User name:
+            input#userName.form-control(type='text' name='userName')
+          div.form-group
+            label(for='pw') Password:
+            input#pw.form-control(type='password' name='password')
+          button.btn.btn-primary(type='submit') Submit

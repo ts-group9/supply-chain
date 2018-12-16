@@ -3,12 +3,17 @@ var userService = require('./userService.js');
 var colors = require('colors');
 var logPrefix = "Test: ".cyan;
 
-userService.getUserWallet("Govind2","eth234").then(function(wallet){
-  console.log(logPrefix+" wallet: "+JSON.stringify(wallet));
-  console.log(logPrefix+" wallet address: "+JSON.stringify(wallet.address));
+const request = require('request');
+
+var address = "0x3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";
+request('https://faucet.ropsten.be/donate/'+address, { json: true }, (err, res, body) => {
+  if (err) {
+     return console.log(err);
+  }
+  console.log(JSON.stringify(body));
+  console.log(body.explanation);
 });
 
-userService.createUser("Govind2","eth234");
 
 /*
 // Connect a wallet to mainnet

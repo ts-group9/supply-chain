@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h2.display-4.m-b-2 Enter product id to get details
+        // register form
+        form(method='POST' action='/productDetails')
+          div.form-group
+            label(for='productId') Product id:
+            input#productId.form-control(type='text' name='productId')
+          button.btn.btn-primary(type='submit') Get details
