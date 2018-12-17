@@ -1,0 +1,94 @@
+pragma solidity >=0.4.22 <0.6.0;
+
+contract AppContract {
+
+   DataContract dataContract;
+  
+   constructor(address dataContractAddress) public {
+       dataContract = DataContract(dataContractAddress);
+       
+   }
+
+   function signupUser(address userAddress, string memory userName, DataContract.Role role ) public {
+       dataContract.addUser(userName, role, userAddress);
+   }
+   
+   function addProduct(address userAddress, string memory productId, string memory productName) public {
+       dataContract.addProduct(productId, productName, userAddress);
+   }
+   
+   function queryProductDetails(string memory productId) public view returns (string memory productIdReturn, string memory name, string memory ownerName, bool IsVerified) {
+       (string memory productName, address owner, bool isVerified) = dataContract.getProductDetails(productId);
+       (string memory userName, ) = dataContract.getUserDetails(owner);
+       return(productId, productName, userName, isVerified);
+       
+   }
+   
+   function getUserDetails(address userAddress) public view returns (string memory userName, DataContract.Role role) {
+       return dataContract.getUserDetails(userAddress);
+   }
+   
+     function transferOwnership (address ownerAddress, string memory productId, address newOwner ) public {
+        (, address owner, ) = dataContract.getProductDetails(productId);
+        if(owner== ownerAddress)
+        {
+            dataContract.changeOwnerShip(productId, newOwner);
+        }
+         
+     }
+     
+    function approveProduct (address userAddress, string memory productId) public {
+        (, DataContract.Role role) = dataContract.getUserDetails(userAddress);
+        if(role == DataContract.Role.Regulator)
+        {
+            dataContract.approveProduct(productId);
+        }
+         
+     }
+}
+
+
+contract DataContract {
+    enum Role {Producer, Supplier, Consumer, Regulator }
+    struct UserDetails {
+        string userName;
+        Role role;
+    }
+    
+    struct ProductDetails {
+        string name;
+        address owner;
+        bool IsVerified;
+    }
+    
+    mapping(address => UserDetails ) users;
+    mapping(string => ProductDetails) products;
+    
+     function addUser (string memory userName, Role role, address userAddress ) public {
+         users[userAddress] = UserDetails(userName, role);
+         
+     }
+     function addProduct (string memory productId, string memory productName, address owner ) public {
+         products[productId] = ProductDetails(productName, owner, false);
+         
+     }
+     
+   function getProductDetails(string memory productId) public view returns (string memory name, address owner, bool IsVerified) {
+       ProductDetails memory productDetails = products[productId];
+       return (productDetails.name, productDetails.owner, productDetails.IsVerified);
+   }
+   
+   function getUserDetails(address userAddress) public view returns (string memory userName, DataContract.Role role) {
+       UserDetails memory userDetails = users[userAddress];
+       return (userDetails.userName, userDetails.role);
+   }
+     
+     function changeOwnerShip(string memory productId, address newOwner) public {
+         products[productId].owner = newOwner;
+     }
+     
+     function approveProduct(string memory productId) public
+     {
+         products[productId].IsVerified = true;
+     }
+}    
