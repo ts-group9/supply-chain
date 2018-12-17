@@ -114,7 +114,38 @@ app.route('/products')
 app.route('/productDetails')
 .post(function(req,res){
   console.log(logPrefix+"API hit: POST /productDetails");
+  var productId = req.body.productId;
   return productService.getProduct(req.body.productId).then(function(detail){
     res.render('productDetails',{product:detail,session:session});
   });
+  });
+
+app.route('/verifyProduct')
+    .get(function(req,res){
+      console.log(logPrefix+"API hit: GET /verifyProduct");
+      res.render('verifyProduct');
+  });
+
+app.route('/verifyProduct')
+  .post(function(req,res){
+    console.log(logPrefix+"API hit: POST /verifyProduct, req = " + JSON.stringify(req.body));
+    return productService.verifyProduct(req.body.productId).then(function(detail){
+      console.log("details : " + JSON.stringify(detail))
+      res.render('productDetails',{product:{id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
+    });
+    });
+
+app.route('/transferOwnership')
+  .get(function(req,res){
+    console.log(logPrefix+"API hit: GET /transferOwnership");
+    res.render('transferOwnership');
 });
+
+app.route('/transferOwnership')
+  .post(function(req,res){
+    console.log(logPrefix+"API hit: POST /transferOwnership, req = " + JSON.stringify(req.body));
+    return productService.transferOwnership(req.body.productId).then(function(detail){
+      console.log("details : " + JSON.stringify(detail))
+      res.render('productDetails',{product:{id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
+    });
+  });
