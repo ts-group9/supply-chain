@@ -25,13 +25,13 @@ html
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.navbar-brand(href="#") Group9
+            a.navbar-brand(href="/") Group9
           #navbar-inverse.collapse.navbar-collapse
             ul.nav.navbar-nav
               li.active: a( href="/") Home
               li: a( href="#contact" ) Contact Us
               if session.userName
-                li: a( href="/register" ) Register new user
+                li: a( href="/register" ) New user
                 li: a( href="/addProduct" ) Add product
                 li: a( href="/getProduct" ) Search
                 li: a( href="/allProducts" ) All products
