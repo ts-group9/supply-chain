@@ -4,13 +4,13 @@ const fs = require('fs');
 var logPrefix = "contractHelper: ".red;
 
 var dataContractAddress = "0xeEd4b7A47DFfdb0E9573d4B3071E7ae5607e2D44";
-var appContractAddress = "0x60459b91F147FBE1039056Bd0255b867966da030";
+var appContractAddress = "0x2ed143fc7098d0194c7442d1f94912b885e0c0a7";
 
 var appContractData = require('./appContract.js');
 
 var provider = ethers.getDefaultProvider('ropsten');
 
-var ownerPrivateKey = "0x8ee59a190870a361e482c4ec1db59498532b7f4111ea5501100a0773cceca4c5";
+var ownerPrivateKey = "0x8695DBFE38DDE3F2C78445E9F2F125324E7CFDEBDB68C0CF9FC1AEBC381332DD";
 var wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
 var addUser = async function(userAddress,userName,role){
@@ -47,3 +47,27 @@ var getProduct = async function(productId){
   return currentValue;
 }
 exports.getProduct = getProduct;
+
+var verifyProduct = async function(userAddress,productId){
+
+  var contract = new ethers.Contract(appContractAddress, appContractData.getAbi(), provider);
+  var contractWithSigner = contract.connect(wallet);
+
+  console.log(logPrefix+"Verifying productId:"+productId);
+  var currentValue = await contractWithSigner.approveProduct(userAddress,productId);
+  console.log(logPrefix+"Product:"+ JSON.stringify(currentValue));
+  return getProduct(productId);
+}
+exports.verifyProduct = verifyProduct;
+
+var transferOwnership = async function(ownerAddress,productId,newOwner){
+
+  var contract = new ethers.Contract(appContractAddress, appContractData.getAbi(), provider);
+  var contractWithSigner = contract.connect(wallet);
+
+  console.log(logPrefix+"Transferring productId:"+productId + " from owner " + ownerAddress + "to owner" + newOwner);
+  var currentValue = await contractWithSigner.transferOwnership(ownerAddress,productId,newOwner);
+  console.log(logPrefix+"Product:"+ JSON.stringify(currentValue));
+  return getProduct(productId);
+}
+exports.transferOwnership = transferOwnership;

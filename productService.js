@@ -22,3 +22,18 @@ function(req){
 */
 
 exports.addProduct = addProduct;
+
+var verifyProduct = function(productId){
+  var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
+  return contractHelper.verifyProduct(address,productId);
+}
+
+exports.verifyProduct = verifyProduct;
+
+var transferOwnership = function(productId,newOwner){
+  var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
+  newOwner = address;
+  return contractHelper.transferOwnership(address,productId,newOwner);
+}
+
+exports.transferOwnership = transferOwnership;
