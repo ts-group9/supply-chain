@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h2.display-4.m-b-2 Enter details
+
+        // register form
+        form(method='POST' action='/login')
+          div.form-group
+            label(for='userName') User name:
+            input#userName.form-control(type='text', placeholder='user name' name='userName')
+          div.form-group
+            label(for='pw') Password:
+            input#pw.form-control(type='password' name='password')
+
+          button.btn.btn-primary(type='submit') Login

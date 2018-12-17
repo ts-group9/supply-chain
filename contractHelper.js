@@ -47,3 +47,13 @@ var getProduct = async function(productId){
   return currentValue;
 }
 exports.getProduct = getProduct;
+
+var getAllProducts = async function(){
+
+  var contract = new ethers.Contract(appContractAddress, appContractData.getAbi(), provider);
+  console.log(logPrefix+"Getting all products:");
+  var currentValue = await contract.getAllProducts();
+  console.log(logPrefix+"Products:"+currentValue);
+  return currentValue;
+}
+exports.getProduct = getProduct;

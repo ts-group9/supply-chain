@@ -29,22 +29,34 @@ html
           #navbar-inverse.collapse.navbar-collapse
             ul.nav.navbar-nav
               li.active: a( href="/") Home
-              li: a( href="/register" ) Register user
-              li: a( href="/addProduct" ) Add product
-              li: a( href="/getProduct" ) Search
-              li: a( href="/allProducts" ) All products
-              li: a( href="#contact" ) Contact
-              li.dropdown
-                a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Dropdown
-                    span.caret
-                ul.dropdown-menu( role="menu" )
-                    li: a( href="#" ) Action
-                    li: a( href="#" ) Another action
-                    li: a( href="#" ) Something else here
-                    li.divider
-                    li.dropdown-header Nav header
-                    li: a( href="#" ) Separated link
-                    li: a( href="#" ) One more separated link
+              li: a( href="#contact" ) Contact Us
+              if session.userName
+                li: a( href="/register" ) Register new user
+                li: a( href="/addProduct" ) Add product
+                li: a( href="/getProduct" ) Search
+                li: a( href="/allProducts" ) All products
+                li.dropdown(style="padding-left:5rem;")
+                  a.dropdown-toggle(data-toggle="dropdown", role="button", aria-expanded="false" ) Account
+                      span.caret
+                  ul.dropdown-menu(style="padding-left:2rem;", role="menu" )
+                      li: #{session.userName}
+                      li.dropdown-header Role: #{session.role}
+                      li.divider
+                      li: a( href="#" ) Profile
+                      li: a( href="#" ) Balance
+                      li.divider
+                      li: a( href="/logout" ) Logout
+              else
+                li: a( href="/register" ) Register
+                li: a( href="/login" ) Login
+
+      block customMsg
+        if msg
+          .main.container
+            .row
+              .col-md-6.col-md-offset-3
+                p(style="color: red;font-size: 20px") #{msg}
+
       block content
 
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
