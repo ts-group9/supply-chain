@@ -1,6 +1,90 @@
-extends layout
+extends layout-logged-in
 
 block content
-  .jumbotron
-    h2 Hello, world!
-    p This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.
+  #page-wrapper
+    .container-fluid
+      // Page Heading
+      .row
+        .col-lg-12
+          h1.page-header
+            | Hello #{session.userName}!</br>
+            small  Role: #{session.role}
+          ol.breadcrumb
+            li.active
+              i.fa.fa-dashboard
+              |  Dashboard
+      // /.row
+      .row
+        .col-lg-3.col-md-6
+          .panel.panel-primary
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-clock-o.fa-5x
+                .col-xs-9.text-right
+                  .huge 26
+                  div Un-verified!
+            a(href='#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+        .col-lg-3.col-md-6
+          .panel.panel-green
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-tasks.fa-5x
+                .col-xs-9.text-right
+                  .huge 12
+                  div Verified!
+            a(href='#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+        .col-lg-3.col-md-6
+          .panel.panel-yellow
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-shopping-cart.fa-5x
+                .col-xs-9.text-right
+                  .huge 124
+                  div Ordered!
+            a(href='#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+      // /.row
+      .row
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title
+              i.fa.fa-money.fa-fw
+              |  Transactions Panel
+          .panel-body
+            .table-responsive
+              table.table.table-bordered.table-hover.table-striped
+                thead
+                  tr
+                    th Order #
+                    th Product #
+                    th Order Date
+                    th Order Time
+                    th Amount (USD)
+                tbody
+                  tr
+                    td 3319
+                    td Prod 101
+                    td 10/21/2013
+                    td 2:13 PM
+                    td $943.45
+            .text-right
+              a(href='#')
+                | View All Transactions
+                i.fa.fa-arrow-circle-right

@@ -4,12 +4,12 @@ var url = 'mongodb://localhost:27017/';
 var colors = require('colors');
 var logPrefix = "Mongo helper: ".green;
 
-exports.getUserDetails = function(userName,password){
+exports.getUserDetails = function(email,password){
   return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
     console.log(logPrefix+'Connected to mongodb @ '+url);
 
     var collection = db.db('test').collection('users');
-    return collection.findOne({"name":userName,"password" : password});
+    return collection.findOne({"email":email,"password" : password});
   }).then(function(user){
     return user;
   });

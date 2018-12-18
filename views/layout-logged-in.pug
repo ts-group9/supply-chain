@@ -1,0 +1,138 @@
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+
+    title='Group9'
+    block stylesheets
+      style
+        include ./css/bootstrap.min.css
+        include ./css/sb-admin.css
+        include ./css/plugins/morris.css
+
+      link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
+
+  body(background='https://static1.squarespace.com/static/58a0ed2915d5dbc3ddb53826/t/5be3e5d9562fa7cc77b88664/1541658716358/Header3_Landing+page_Collaborative+Logistics.png')
+      #wrapper
+        // Navigation
+        nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+          // Brand and toggle get grouped for better mobile display
+          .navbar-header
+            a.navbar-brand(href='/') Group9
+          // Top Menu Items
+          ul.nav.navbar-right.top-nav
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                i.fa.fa-envelope
+                b.caret
+              ul.dropdown-menu.message-dropdown
+                li.message-preview
+                  a(href='#')
+                    .media
+                      span.pull-left
+                        img.media-object(src='http://placehold.it/50x50', alt='')
+                      .media-body
+                        h5.media-heading
+                          strong #{session.userName}
+                        p.small.text-muted
+                          i.fa.fa-clock-o
+                          |  Yesterday at 4:32 PM
+                        p Lorem ipsum dolor sit amet, consectetur...
+                li.message-preview
+                  a(href='#')
+                    .media
+                      span.pull-left
+                        img.media-object(src='http://placehold.it/50x50', alt='')
+                      .media-body
+                        h5.media-heading
+                          strong #{session.userName}
+                        p.small.text-muted
+                          i.fa.fa-clock-o
+                          |  Yesterday at 4:32 PM
+                        p Lorem ipsum dolor sit amet, consectetur...
+                li.message-preview
+                  a(href='#')
+                    .media
+                      span.pull-left
+                        img.media-object(src='http://placehold.it/50x50', alt='')
+                      .media-body
+                        h5.media-heading
+                          strong #{session.userName}
+                        p.small.text-muted
+                          i.fa.fa-clock-o
+                          |  Yesterday at 4:32 PM
+                        p Lorem ipsum dolor sit amet, consectetur...
+                li.message-footer
+                  a(href='#') Read All New Messages
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                i.fa.fa-bell
+                b.caret
+              ul.dropdown-menu.alert-dropdown
+                li
+                  a(href='#')
+                    | Alert Name
+                    span.label.label-default Alert Badge
+                li
+                  a(href='#')
+                    | Alert Name
+                    span.label.label-primary Alert Badge
+                li.divider
+                li
+                  a(href='#') View All
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                i.fa.fa-user
+                |  #{session.userName}
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='#')
+                    i.fa.fa-fw.fa-user
+                    |  Profile
+                li
+                  a(href='#')
+                    i.fa.fa-fw.fa-envelope
+                    |  Inbox
+                li
+                  a(href='#')
+                    i.fa.fa-fw.fa-gear
+                    |  Settings
+                li.divider
+                li
+                  a(href='/logout')
+                    i.fa.fa-fw.fa-power-off
+                    |  Log Out
+          // Sidebar Menu Items - These collapse to the responsive navigation menu on small screens
+          .collapse.navbar-collapse.navbar-ex1-collapse
+            ul.nav.navbar-nav.side-nav
+              li.active
+                a(href='/addProduct')
+                  i.fa.fa-fw.fa-plus
+                  |  Add product
+              li
+                a(href='/transferOwnership')
+                  i.fa.fa-fw.fa-briefcase
+                  |  Transfer ownership
+              li
+                a(href='/verifyProduct')
+                  i.fa.fa-fw.fa-table
+                  |  Verify Product
+
+        if msg
+          #custom-msg
+            .container-fluid
+              .row(style="background: white")
+                .col-sm-2
+                  p(style="color: red;font-size: 20px") #{msg}
+
+        block content
+
+
+      block scriptFiles
+        script
+          include js/jquery.js
+          include js/bootstrap.min.js
+          include js/plugins/morris/raphael.min.js
+          include js/plugins/morris/morris-data.js

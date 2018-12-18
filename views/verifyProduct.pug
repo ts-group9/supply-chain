@@ -1,13 +1,14 @@
-extends layout
+extends layout-logged-in
 
 block content
-  .main.container
-    .row
-      .col-md-6.col-md-offset-3
-        h2.display-4.m-b-2 Enter product id
-        // register form
-        form(method='POST' action='/verifyProduct')
-          div.form-group
-            label(for='productId') Product id:
-            input#productId.form-control(type='text' name='productId')
-          button.btn.btn-primary(type='submit') Verify Product
+  #page-wrapper
+    .container-fluid
+      .row
+        .col-md-8.col-md-offset-1
+          h2.display-4.m-b-2 Enter product id
+          // register form
+          form(method='POST' action='/verifyProduct')
+            div.form-group
+              label(for='productId') Product id:
+              input#productId.form-control(type='text' name='productId')
+            button.btn.btn-primary(type='submit') Verify Product

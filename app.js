@@ -17,20 +17,12 @@ var server = app.listen(3000);
 var session = {};
 
 app.route('/login')
-.get(function(req,res){
-  console.log(logPrefix+"API hit: GET /login");
-  res.render('login',{session:session});
-})
 .post(function(req,res){
   console.log(logPrefix+"API hit: POST /login");
-  return userService.getUser(req.body.userName,req.body.password).then(function(user){
+  return userService.getUser(req.body.email,req.body.password).then(function(user){
     if(user){
-      session['userName'] = user.name;
-      session['role'] = user.role;
-      session['email'] = user.email;
-      session['accountAddress'] = user.wallet.address;
-
-      res.render('index',{session:session,msg:"Hi "+user.name});
+      setSessionDetails(user);
+      res.render('index',{session:session});
     }else{
       var msg = "Invalid username or password; please try again"
       res.render('login',{session:session,msg:msg});
@@ -42,20 +34,26 @@ app.route('/logout')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /logout");
   session = {};
-  res.render('login',{session:session});
+  res.render('home',{session:session});
 })
 
 app.route('/')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /");
-  res.render('index',{session:session})
+  if(session.userName){
+    res.render('index',{session:session})
+  }else{
+    res.render('home',{session:session});
+  }
 });
 
+/* Don't need
 app.route('/register')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /register");
   res.render('register',{session:session})
 });
+*/
 
 app.route('/addProduct')
 .get(function(req,res){
@@ -97,10 +95,26 @@ app.route('/users')
 .post(function(req,res){
   console.log(logPrefix+"API hit: POST /users");
   console.log(logPrefix+"User details:"+JSON.stringify(req.body));
-  userService.createUser(req.body);
-  console.log(logPrefix+"Added user!");
-  res.render('register',{session:session});
+  userService.createUser(req.body).then(function(user){
+    console.log(logPrefix+"Added user!");
+    setSessionDetails(user);
+    res.render('index',{session:session});
+  });
 });
+var roles = {};
+roles[0] = "Producer";
+roles[1] = "Supplier";
+roles[2] = "Consumer";
+roles[3] = "Regulator";
+
+var setSessionDetails = function(user){
+  session['userName'] = user.name;
+  session['role'] = roles[user.role];
+  session['email'] = user.email;
+  session['accountAddress'] = user.wallet.address;
+  console.log(logPrefix+"session:"+JSON.stringify(session));
+
+}
 
 app.route('/products')
 .post(function(req,res){
@@ -121,10 +135,10 @@ app.route('/productDetails')
   });
 
 app.route('/verifyProduct')
-    .get(function(req,res){
-      console.log(logPrefix+"API hit: GET /verifyProduct");
-      res.render('verifyProduct');
-  });
+.get(function(req,res){
+  console.log(logPrefix+"API hit: GET /verifyProduct");
+      res.render('verifyProduct',{session:session});
+});
 
 app.route('/verifyProduct')
   .post(function(req,res){
@@ -138,7 +152,7 @@ app.route('/verifyProduct')
 app.route('/transferOwnership')
   .get(function(req,res){
     console.log(logPrefix+"API hit: GET /transferOwnership");
-    res.render('transferOwnership');
+    res.render('transferOwnership',{session:session});
 });
 
 app.route('/transferOwnership')
@@ -146,6 +160,6 @@ app.route('/transferOwnership')
     console.log(logPrefix+"API hit: POST /transferOwnership, req = " + JSON.stringify(req.body));
     return productService.transferOwnership(req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      res.render('productDetails',{product:{id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
+      res.render('productDetails',{product:{session:session,id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
     });
   });
