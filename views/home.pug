@@ -6,35 +6,67 @@ html(lang='en')
       style
         include ./css/bootstrap.min.css
         include ./css/sb-admin.css
-        include ./css/plugins/morris.css
 
-      script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
-      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
 
-  body(background='https://static1.squarespace.com/static/58a0ed2915d5dbc3ddb53826/t/5be3e5d9562fa7cc77b88664/1541658716358/Header3_Landing+page_Collaborative+Logistics.png')
-    #bar
-      block navBar
-        nav.navbar.navbar-default( role="navigation" )
-          .navbar-header
-            a.navbar-brand(href="/") Group9
-          #navbar-inverse.collapse.navbar-collapse
-            ul.nav.navbar-nav.navbar-right.top-nav
-              li.active: a( href="/") Home
-              li: a( href="#contact" ) Contact Us
-              li
-                button.btn.navbar-btn.btn-md(type='button', data-toggle='modal', data-target='#modalRegForm') Register
-                #modalRegForm.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+  body.background-image(background='https://static1.squarespace.com/static/58a0ed2915d5dbc3ddb53826/t/5be3e5d9562fa7cc77b88664/1541658716358/Header3_Landing+page_Collaborative+Logistics.png?format=1700w')
+    block navBar
+      nav.navbar.navbar-default( role="navigation" )
+        .navbar-header
+          a.navbar-brand(href="/") Group9
+        #navbar-inverse.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right.top-nav
+            li.active: a( href="/") Home
+            li: a( href="#contact" ) Contact Us
+            li
+              button.btn.navbar-btn.btn-md(type='button', data-toggle='modal', data-target='#modalRegForm') Register
+              #modalRegForm.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+                .modal-dialog(role='document')
+                  .modal-content
+                    form(method='POST' action='/users')
+                      .modal-header.text-center
+                        h4.modal-title.w-100.font-weight-bold Register
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') ×
+                      .modal-body.mx-3
+                        .md-form.mb-5
+                          label(for='name') Name:
+                          input#name.form-control(type='text', placeholder='first and last' name='name')
+                      .modal-body.mx-3
+                        .md-form.mb-5
+                          label(for='email') Email:
+                          input#email.form-control(type='email', placeholder='name@email.com' name='email')
+                      .modal-body.mx-3
+                        .md-form.mb-5
+                          label(for='pw') Password:
+                          input#pw.form-control(type='password' name='password')
+                      .modal-body.mx-3
+                        .md-form.mb-5
+                          label(for='pw2') Confirm Password:
+                          input#pw2.form-control(type='password' name='confirmPassword')
+                      .modal-body.mx-3
+                        .md-form.mb-5
+                          label(for="role") Role:
+                          div.role(style="padding-bottom:2rem;")
+                            select(name = "role")
+                              option(value=3) Regulator
+                              option(value=0) Producer
+                              option(value=1) Supplier
+                              option(value=2) Consumer
+                      .modal-footer.d-flex.justify-content-center
+                        button.btn.btn-primary(type='submit') Sign up
+            li
+              div.role(style="padding-left:1rem;")
+                button.btn.navbar-btn.btn-md(type='button', data-toggle='modal', data-target='#modalLoginForm') Login
+                #modalLoginForm.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
                   .modal-dialog(role='document')
                     .modal-content
-                      form(method='POST' action='/users')
+                      form(method='POST' action='/login')
                         .modal-header.text-center
-                          h4.modal-title.w-100.font-weight-bold Register
+                          h4.modal-title.w-100.font-weight-bold Sign in
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
-                        .modal-body.mx-3
-                          .md-form.mb-5
-                            label(for='name') Name:
-                            input#name.form-control(type='text', placeholder='first and last' name='name')
                         .modal-body.mx-3
                           .md-form.mb-5
                             label(for='email') Email:
@@ -42,47 +74,15 @@ html(lang='en')
                         .modal-body.mx-3
                           .md-form.mb-5
                             label(for='pw') Password:
-                            input#pw.form-control(type='password' name='password')
-                        .modal-body.mx-3
-                          .md-form.mb-5
-                            label(for='pw2') Confirm Password:
-                            input#pw2.form-control(type='password' name='confirmPassword')
-                        .modal-body.mx-3
-                          .md-form.mb-5
-                            label(for="role") Role:
-                            div.role(style="padding-bottom:2rem;")
-                              select(name = "role")
-                                option(value=3) Regulator
-                                option(value=0) Producer
-                                option(value=1) Supplier
-                                option(value=2) Consumer
+                            input#pw.form-control(type='password' name='password' placeholder='Password')
                         .modal-footer.d-flex.justify-content-center
-                          button.btn.btn-primary(type='submit') Sign up
-              li
-                div.role(style="padding-left:1rem;")
-                  button.btn.navbar-btn.btn-md(type='button', data-toggle='modal', data-target='#modalLoginForm') Login
-                  #modalLoginForm.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        form(method='POST' action='/login')
-                          .modal-header.text-center
-                            h4.modal-title.w-100.font-weight-bold Sign in
-                            button.close(type='button', data-dismiss='modal', aria-label='Close')
-                              span(aria-hidden='true') ×
-                          .modal-body.mx-3
-                            .md-form.mb-5
-                              label(for='email') Email:
-                              input#email.form-control(type='email', placeholder='name@email.com' name='email')
-                          .modal-body.mx-3
-                            .md-form.mb-5
-                              label(for='pw') Password:
-                              input#pw.form-control(type='password' name='password' placeholder='Password')
-                          .modal-footer.d-flex.justify-content-center
-                            button.btn.btn-primary(type='submit') Sign in
+                          button.btn.btn-primary(type='submit') Sign in
 
-    .row(style="color: white; padding-top:10rem;")
+    .row(style=" padding-top:5rem;")
       .col-md-6.col-md-offset-1.vcenter.hcenter
-        h2.display-2 Supply chain on Ethereum
+        h2.display-2
+          p(style="color: white;") Supply chain on Ethereum
         h4.display-2
-          p(style="color: grey; padding-top:2rem;")
+          p(style="color: white; padding-top:2rem;")
             asdfasdf Every time a product changes hands, the transaction could be documented, creating a permanent history of a product, from manufacture to sale. This could dramatically reduce time delays, added costs, and human error that plague transactions today.
+        button.btn.btn-primary.btn-md(type='button', data-toggle='modal', data-target='#modalRegForm') GET STARTED
