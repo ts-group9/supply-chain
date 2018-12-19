@@ -78,18 +78,10 @@ app.route('/allProducts')
   console.log(logPrefix+"API hit: GET /allProducts");
   // TODO: create getAllProduct() in contractHelper
   //var prods = productService.getAll();
-  var prod = {};
-  prod['IsVerified'] = 'true';
-  prod['ownerName'] = 'Sanjeev';
-  prod['name'] = 'Prod 1';
-  prod['id'] = '101';
-
-  var prods = [];
-  prods.push(prod);
-  prods.push(prod);
-  prods.push(prod);
-
-  res.render('products',{list:prods,session:session});
+  return productService.getAll().then(function(products){
+    console.log(logPrefix+"Products :: "+ JSON.stringify(products));
+    res.render('products',{list:products,session:session});
+  });
 });
 
 app.route('/users')

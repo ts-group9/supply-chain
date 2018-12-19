@@ -10,12 +10,8 @@ block content
           tr
             th ProductId
             th Name
-            th Owner
-            th Verified
         tbody
           each product in list
             tr
-              td #{product.id}
-              td #{product.name}
-              td #{product.ownerName}
-              td #{product.IsVerified}
+              td #{product.productId}
+              td #{product.productName}

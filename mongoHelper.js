@@ -1,3 +1,4 @@
+
 var mongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/';
 
@@ -12,6 +13,17 @@ exports.getUserDetails = function(email,password){
     return collection.findOne({"email":email,"password" : password});
   }).then(function(user){
     return user;
+  });
+}
+
+exports.getProductDetails = function(productId){
+  return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
+    console.log(logPrefix+'Connected to mongodb @ '+url);
+
+    var collection = db.db('test').collection('products');
+    return collection.findOne({"productId":productId});
+  }).then(function(product){
+    return product;
   });
 }
 
@@ -38,6 +50,18 @@ exports.getAllUsers = function() {
   });
 }
 
+exports.getAllProducts = function() {
+  return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
+    console.log(logPrefix+'Connected to mongodb @ '+url);
+
+    var collection = db.db('test').collection('products');
+    return collection.find().toArray();
+  }).then(function(products) {
+    console.log(logPrefix+"Products in mongo:"+JSON.stringify(products));
+    return products;
+  });
+}
+
 exports.saveUser = function(req){
   mongoClient.connect(url,{useNewUrlParser: true},function(err,db){
     if(err){
@@ -51,4 +75,19 @@ exports.saveUser = function(req){
       db.close();
     });
   });
+}
+
+exports.saveProduct = function(req){
+    mongoClient.connect(url,{useNewUrlParser: true},function(err,db){
+      if(err){
+        throw err;
+      }
+      console.log(logPrefix+'Connected to mongodb @ '+url);
+      var dbo = db.db('test');
+      dbo.collection("products").insertOne(req, function(err, res) {
+        if (err) throw err;
+        console.log(logPrefix+"Product details inserted");
+        db.close();
+      });
+    });
 }
