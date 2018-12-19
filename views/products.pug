@@ -7,10 +7,16 @@ block content
     table.table.table-hover.table-bordered
       thead
         tr
-          th ProductId
+          th Id
           th Name
+          th Type
+          th Quantity
+          th Added On
       tbody
         each product in list
           tr
             td #{product.productId}
             td #{product.productName}
+            td #{product.productType}
+            td #{product.productQty}
+            td #{product.addedOn}

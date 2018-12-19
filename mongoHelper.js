@@ -91,3 +91,26 @@ exports.saveProduct = function(req){
       });
     });
 }
+
+exports.logTransferOwnership = function(oldOwnerEmail,newOwnerEmail,productId,tx){
+  var log = {};
+  log['oldOwnerEmail'] = oldOwnerEmail;
+  log['newOwnerEmail'] = newOwnerEmail;
+  log['tx'] = tx;
+  log['updateOn'] = new Date();
+
+  var update = { $push: { logs: log } };
+  var query = { productId:productId};
+  mongoClient.connect(url,{useNewUrlParser: true},function(err,db){
+    if(err){
+      throw err;
+    }
+    console.log(logPrefix+'Connected to mongodb @ '+url);
+    var dbo = db.db('test');
+    dbo.collection("products").updateOne(query,update, function(err, res) {
+      if (err) throw err;
+      console.log(logPrefix+"Product details inserted");
+      db.close();
+    });
+  });
+}

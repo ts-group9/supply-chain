@@ -3,17 +3,39 @@ extends layout-logged-in
 block content
   .container-fluid
     .row
-    h3 Product Details
-    table.table.table-hover.table-bordered
-      thead
-        tr
-          th ProductId
-          th Name
-          th Owner
-          th Verified
-      tbody
+      h3 Product Details
+      table.table.table-hover.table-bordered
+        thead
           tr
-            td #{product.productIdReturn}
-            td #{product.name}
+            th Id
+            th Name
+            th Type
+            th Quantity
+            th Owner
+            th Verified
+            th Added On
+        tbody
+          tr
+            td #{product.productId}
+            td #{product.productName}
+            td #{product.productType}
+            td #{product.productQty}
             td #{product.ownerName}
             td #{product.IsVerified}
+            td #{product.addedOn}
+    .row
+      h3  Transaction history
+      table.table.table-hover.table-bordered
+        thead
+          tr
+            th Transaction id
+            th Old owner
+            th New owner
+            th Updated On
+        tbody
+          each log in product.logs
+            tr
+              td #{log.tx.hash}
+              td #{log.oldOwnerEmail}
+              td #{log.newOwnerEmail}
+              td #{log.updateOn}

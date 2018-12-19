@@ -2,54 +2,50 @@ var userService = require('./userService.js');
 var contractHelper = require('./contractHelper.js');
 var mongoHelper = require('./mongoHelper.js')
 
-var senetize = function(address){
-  console.log("addr::::"+JSON.stringify(address));
-  var add = JSON.stringify(address);
-  return add.replace("0x","");;
+var addProductDetailsFromDB = function(productId,product){
+  return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
+    mongoProduct['IsVerified'] = product.IsVerified;
+    mongoProduct['ownerName'] = product.ownerName;
+    return mongoProduct;
+  });
 }
 
 var getProduct = function(productId){
   return contractHelper.getProduct(productId).then(function(product){
-    return product;
+    return addProductDetailsFromDB(productId,product);
   });
 }
-exports.getProduct = getProduct;
 
 var addProduct = function(address,req){
+  req['productId'] = Math.random().toString(36).substr(2);
+  req['addedOn'] = new Date();
   mongoHelper.saveProduct(req);
   //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
-  contractHelper.addProduct(address,req.productId,req.productName);
+  return contractHelper.addProduct(address,req.productId,req.productName);
 }
-exports.addProduct = addProduct;
 
 var getAll = function(){
   return mongoHelper.getAllProducts().then(function(products){
     return products;
   });
 }
-exports.getAll = getAll;
 
 exports.addProduct = addProduct;
-
-var verifyProduct = function(address,productId){
+  var verifyProduct = function(address,productId){
   //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
-
   return contractHelper.verifyProduct(address,productId);
 }
 
-exports.verifyProduct = verifyProduct;
-
-var transferOwnership = function(curOwnerAddress,newOwnerEmail,productId){
-  //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
+var transferOwnership = function(session,newOwnerEmail,productId){
   return userService.getUserFromEmail(newOwnerEmail).then(function(user){
-
-    var newOwnerAddress = user.wallet.address;
-    curOwnerAddress = curOwnerAddress;
-    console.log("newOwnerAddress:"+newOwnerAddress);
-    console.log("curOwnerAddress:"+curOwnerAddress);
-
-    return contractHelper.transferOwnership(curOwnerAddress,productId,newOwnerAddress);
+    return contractHelper.transferOwnership(session,productId,user).then(function(product){
+      return addProductDetailsFromDB(productId,product);
+    });
   });
 }
 
+exports.addProduct = addProduct;
+exports.getAll = getAll;
+exports.verifyProduct = verifyProduct;
 exports.transferOwnership = transferOwnership;
+exports.getProduct = getProduct;

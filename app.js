@@ -64,7 +64,11 @@ app.route('/register')
 app.route('/addProduct')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /addProduct");
-  res.render('addProduct',{session:session});
+  if(session.userName){
+    res.render('addProduct',{session:session});
+  }else{
+    res.render('home',{session:session});
+  }
 });
 
 app.route('/getProduct')
@@ -110,8 +114,8 @@ var setSessionDetails = function(user){
   session['userName'] = user.name;
   session['role'] = roles[user.role];
   session['email'] = user.email;
-  session['accountAddress'] = JSON.stringify(user.wallet.address);
-  session['balance'] = 2.015; //user.balance;
+  session['accountAddress'] = user.wallet.address;
+  session['balance'] = 1.618; //user.balance;
 
   console.log(logPrefix+"session:"+JSON.stringify(session));
 }
@@ -120,9 +124,11 @@ app.route('/products')
 .post(function(req,res){
   console.log(logPrefix+"API hit: POST /products");
   console.log(logPrefix+"Product details:"+JSON.stringify(req.body));
-  productService.addProduct(session.accountAddress,req.body);
-  console.log(logPrefix + "Added Product!!");
-  res.render('addProduct',{session:session});
+  return productService.addProduct(session.accountAddress,req.body).then(function(txId){
+    console.log(logPrefix + "Added Product!!");
+    var msg = "Last transaction id:"+JSON.stringify(txId.hash);
+    res.render('addProduct',{session:session,msg:msg});
+  });
 });
 
 app.route('/productDetails')
@@ -153,13 +159,17 @@ app.route('/verifyProduct')
 app.route('/transferOwnership')
   .get(function(req,res){
     console.log(logPrefix+"API hit: GET /transferOwnership");
-    res.render('transferOwnership',{session:session});
+    if(session.userName){
+      res.render('transferOwnership',{session:session});
+    }else{
+      res.render('home',{session:session});
+    }
 });
 
 app.route('/transferOwnership')
   .post(function(req,res){
     console.log(logPrefix+"API hit: POST /transferOwnership, req = " + JSON.stringify(req.body));
-    return productService.transferOwnership(session.accountAddress,req.body.newOwner,req.body.productId).then(function(detail){
+    return productService.transferOwnership(session,req.body.newOwner,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
       res.render('productDetails',{product:detail,session:session});
     });
