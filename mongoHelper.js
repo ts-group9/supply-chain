@@ -15,6 +15,17 @@ exports.getUserDetails = function(email,password){
   });
 }
 
+exports.getUserFromEmail = function(email){
+  return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
+    console.log(logPrefix+'Connected to mongodb @ '+url);
+
+    var collection = db.db('test').collection('users');
+    return collection.findOne({"email":email});
+  }).then(function(user){
+    return user;
+  });
+}
+
 exports.getAllUsers = function() {
   return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
     console.log(logPrefix+'Connected to mongodb @ '+url);

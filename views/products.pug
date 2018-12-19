@@ -1,18 +1,21 @@
-extends layout
+extends layout-logged-in
 
 block content
-  table.table.table-hover.table-bordered
-    thead
-      tr
-        th Id
-        th Name
-        th Owner
-        th Status
-    tbody
-      each prod in list
-        tr
-          a(href='/' + prod.id)
-          td #{prod.id}
-          td #{prod.name}
-          td #{prod.owner}
-          td #{prod.status}
+  #page-wrapper
+    .container-fluid
+      .row
+      h3 Product Details
+      table.table.table-hover.table-bordered
+        thead
+          tr
+            th ProductId
+            th Name
+            th Owner
+            th Verified
+        tbody
+          each product in list
+            tr
+              td #{product.id}
+              td #{product.name}
+              td #{product.ownerName}
+              td #{product.IsVerified}

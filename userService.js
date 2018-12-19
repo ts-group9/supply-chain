@@ -36,7 +36,6 @@ exports.getUserWallet = function(userName,password){
   });
 }
 
-
 exports.getUser = function(email,password){
   return mongoHelper.getUserDetails(email,password).then(function(user) {
     if(user){
@@ -44,6 +43,17 @@ exports.getUser = function(email,password){
       return user;
     }else{
       console.log(logPrefix+"User not found with given details!");
+    }
+  });
+}
+
+exports.getUserFromEmail = function(email){
+  return mongoHelper.getUserFromEmail(email).then(function(user) {
+    if(user){
+      console.info(logPrefix+'Fetched details for user name:'+user.name);
+      return user;
+    }else{
+      console.log(logPrefix+"User not found with given Email:"+email);
     }
   });
 }

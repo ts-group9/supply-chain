@@ -30,7 +30,7 @@ var addProduct = async function(userAddress,productId,productName){
   var contract = new ethers.Contract(appContractAddress, appContractData.getAbi(), provider);
   var contractWithSigner = contract.connect(wallet);
 
-  console.log(logPrefix+"userAddress:"+userAddress+" productId:"+productId+" productName:"+productName);
+  console.log(logPrefix+"Adding product; userAddress:"+userAddress+" productId:"+productId+" productName:"+productName);
 
   var tx = await contractWithSigner.addProduct(userAddress,productId,productName);
   console.log(logPrefix+"Tx:"+tx.hash);
@@ -56,7 +56,7 @@ var getAllProducts = async function(){
   console.log(logPrefix+"Products:"+currentValue);
   return currentValue;
 }
-exports.getProduct = getProduct;
+exports.getAllProducts = getAllProducts;
 
 var verifyProduct = async function(userAddress,productId){
 

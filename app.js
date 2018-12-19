@@ -76,10 +76,11 @@ app.route('/productDetails')
 app.route('/allProducts')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /allProducts");
+  // TODO: create getAllProduct() in contractHelper
   //var prods = productService.getAll();
   var prod = {};
-  prod['status'] = 'vefified';
-  prod['owner'] = 'Sanjeev';
+  prod['IsVerified'] = 'true';
+  prod['ownerName'] = 'Sanjeev';
   prod['name'] = 'Prod 1';
   prod['id'] = '101';
 
@@ -88,7 +89,7 @@ app.route('/allProducts')
   prods.push(prod);
   prods.push(prod);
 
-  res.render('products',{list:prods,prod1:prod,session:session});
+  res.render('products',{list:prods,session:session});
 });
 
 app.route('/users')
@@ -113,14 +114,13 @@ var setSessionDetails = function(user){
   session['email'] = user.email;
   session['accountAddress'] = user.wallet.address;
   console.log(logPrefix+"session:"+JSON.stringify(session));
-
 }
 
 app.route('/products')
 .post(function(req,res){
   console.log(logPrefix+"API hit: POST /products");
   console.log(logPrefix+"Product details:"+JSON.stringify(req.body));
-  productService.addProduct(req.body);
+  productService.addProduct(session.accountAddress,req.body);
   console.log(logPrefix+"Added product!");
   res.render('addProduct',{session:session});
 });
@@ -143,9 +143,9 @@ app.route('/verifyProduct')
 app.route('/verifyProduct')
   .post(function(req,res){
     console.log(logPrefix+"API hit: POST /verifyProduct, req = " + JSON.stringify(req.body));
-    return productService.verifyProduct(req.body.productId).then(function(detail){
+    return productService.verifyProduct(session.accountAddress,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      res.render('productDetails',{product:{id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
+      res.render('productDetails',{product:detail,session:session});
     });
     });
 
@@ -158,8 +158,8 @@ app.route('/transferOwnership')
 app.route('/transferOwnership')
   .post(function(req,res){
     console.log(logPrefix+"API hit: POST /transferOwnership, req = " + JSON.stringify(req.body));
-    return productService.transferOwnership(req.body.productId).then(function(detail){
+    return productService.transferOwnership(session.accountAddress,req.body.newOwner,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      res.render('productDetails',{product:{session:session,id:detail.productIdReturn,name:detail.name,owner:detail.ownerName,isVerified:detail.IsVerified}});
+      res.render('productDetails',{product:detail,session:session});
     });
   });
