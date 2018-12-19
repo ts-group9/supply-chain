@@ -112,7 +112,9 @@ var setSessionDetails = function(user){
   session['userName'] = user.name;
   session['role'] = roles[user.role];
   session['email'] = user.email;
-  session['accountAddress'] = user.wallet.address;
+  session['accountAddress'] = user.walletAddress;
+  console.log(logPrefix + "Session[accountAddress] : " + session['accountAddress']);
+  console.log(logPrefix + "Session.accountAddress : " + session.accountAddress );
   console.log(logPrefix+"session:"+JSON.stringify(session));
 }
 
@@ -121,7 +123,7 @@ app.route('/products')
   console.log(logPrefix+"API hit: POST /products");
   console.log(logPrefix+"Product details:"+JSON.stringify(req.body));
   productService.addProduct(session.accountAddress,req.body);
-  console.log(logPrefix+"Added product!");
+  console.log(logPrefix + "Added Product!!");
   res.render('addProduct',{session:session});
 });
 
@@ -143,6 +145,7 @@ app.route('/verifyProduct')
 app.route('/verifyProduct')
   .post(function(req,res){
     console.log(logPrefix+"API hit: POST /verifyProduct, req = " + JSON.stringify(req.body));
+    console.log(logPrefix+"accountAddress - " + session.accountAddress);
     return productService.verifyProduct(session.accountAddress,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
       res.render('productDetails',{product:detail,session:session});

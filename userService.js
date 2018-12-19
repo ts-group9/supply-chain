@@ -9,6 +9,7 @@ exports.createUser = function(req){
   return walletHelper.createWallet().then(function(wallet){
     var user = req;
     user['wallet'] = wallet;
+    user['walletAddress'] = wallet.address;
     mongoHelper.saveUser(user);
     contractHelper.addUser(wallet.address,user.name,user.role);
     console.log(logPrefix+" Saved user details:"+user);

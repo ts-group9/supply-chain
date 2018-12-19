@@ -108,21 +108,25 @@ html
           .collapse.navbar-collapse.navbar-ex1-collapse
             ul.nav.navbar-nav.side-nav
               li.active
+                a(href='/allProducts')
+                  i.fa.fa-fw.fa-list
+                  |  All Products
+              li
                 a(href='/addProduct')
                   i.fa.fa-fw.fa-plus
                   |  Add product
               li
-                a(href='/transferOwnership')
-                  i.fa.fa-fw.fa-briefcase
-                  |  Transfer ownership
+                a(href='/getProduct')
+                  i.fa.fa-fw.fa-search
+                  |  Search product
               li
                 a(href='/verifyProduct')
                   i.fa.fa-fw.fa-table
                   |  Verify Product
               li
-                a(href='/allProducts')
-                  i.fa.fa-fw.fa-list
-                  |  All Products
+                a(href='/transferOwnership')
+                  i.fa.fa-fw.fa-briefcase
+                  |  Transfer ownership
 
         if msg
           #custom-msg

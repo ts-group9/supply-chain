@@ -16,7 +16,7 @@ exports.getProduct = getProduct;
 
 var addProduct = function(address,req){
   //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
-  contractHelper.addProduct(senetize(address),req.productId,req.productName);
+  contractHelper.addProduct(address,req.productId,req.productName);
 }
 exports.addProduct = addProduct;
 
@@ -32,7 +32,7 @@ exports.addProduct = addProduct;
 var verifyProduct = function(address,productId){
   //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
 
-  return contractHelper.verifyProduct(senetize(address),productId);
+  return contractHelper.verifyProduct(address,productId);
 }
 
 exports.verifyProduct = verifyProduct;
@@ -41,8 +41,8 @@ var transferOwnership = function(curOwnerAddress,newOwnerEmail,productId){
   //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
   return userService.getUserFromEmail(newOwnerEmail).then(function(user){
 
-    var newOwnerAddress = senetize(JSON.stringify(user.wallet.address));
-    curOwnerAddress = senetize(curOwnerAddress);
+    var newOwnerAddress = user.wallet.address;
+    curOwnerAddress = curOwnerAddress;
     console.log("newOwnerAddress:"+newOwnerAddress);
     console.log("curOwnerAddress:"+curOwnerAddress);
 

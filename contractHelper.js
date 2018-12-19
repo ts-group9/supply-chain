@@ -11,6 +11,7 @@ var appContractData = require('./appContract.js');
 var provider = ethers.getDefaultProvider('ropsten');
 
 var ownerPrivateKey = "0x8695DBFE38DDE3F2C78445E9F2F125324E7CFDEBDB68C0CF9FC1AEBC381332DD";
+
 var wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
 var addUser = async function(userAddress,userName,role){
@@ -63,7 +64,7 @@ var verifyProduct = async function(userAddress,productId){
   var contract = new ethers.Contract(appContractAddress, appContractData.getAbi(), provider);
   var contractWithSigner = contract.connect(wallet);
 
-  console.log(logPrefix+"Verifying productId:"+productId);
+  console.log(logPrefix+"Verifying productId:"+productId + "with address " + userAddress);
   var currentValue = await contractWithSigner.approveProduct(userAddress,productId);
   console.log(logPrefix+"Product:"+ JSON.stringify(currentValue));
   return getProduct(productId);
