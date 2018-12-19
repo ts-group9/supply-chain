@@ -108,6 +108,10 @@ html
           .collapse.navbar-collapse.navbar-ex1-collapse
             ul.nav.navbar-nav.side-nav
               li.active
+                a(href='/')
+                  i.fa.fa-dashboard
+                  |  Dashboard
+              li
                 a(href='/allProducts')
                   i.fa.fa-fw.fa-list
                   |  All Products
@@ -134,8 +138,9 @@ html
               .row(style="background: white")
                 .col-sm-2
                   p(style="color: red;font-size: 20px") #{msg}
-
-        block content
+        #page-wrapper
+          div(style='height: 100%;')
+            block content
 
 
       block scriptFiles

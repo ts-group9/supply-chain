@@ -1,20 +1,19 @@
 extends layout-logged-in
 
 block content
-  #page-wrapper
-    .container-fluid
-      .row
-      h3 Product Details
-      table.table.table-hover.table-bordered
-        thead
+  .container-fluid
+    .row
+    h3 Product Details
+    table.table.table-hover.table-bordered
+      thead
+        tr
+          th ProductId
+          th Name
+          th Owner
+          th Verified
+      tbody
           tr
-            th ProductId
-            th Name
-            th Owner
-            th Verified
-        tbody
-            tr
-              td #{product.productIdReturn}
-              td #{product.name}
-              td #{product.ownerName}
-              td #{product.IsVerified}
+            td #{product.productIdReturn}
+            td #{product.name}
+            td #{product.ownerName}
+            td #{product.IsVerified}

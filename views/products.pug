@@ -1,17 +1,16 @@
 extends layout-logged-in
 
 block content
-  #page-wrapper
-    .container-fluid
-      .row
-      h3 Product Details
-      table.table.table-hover.table-bordered
-        thead
+  .container-fluid
+    .row
+    h3 Product Details
+    table.table.table-hover.table-bordered
+      thead
+        tr
+          th ProductId
+          th Name
+      tbody
+        each product in list
           tr
-            th ProductId
-            th Name
-        tbody
-          each product in list
-            tr
-              td #{product.productId}
-              td #{product.productName}
+            td #{product.productId}
+            td #{product.productName}

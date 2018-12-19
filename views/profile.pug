@@ -1,0 +1,26 @@
+extends layout-logged-in
+
+block content
+  .container(style='background-color: AliceBlue;')
+    .row
+      .col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
+        i.fa.fa-user.fa-5x
+    .row
+      .col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
+        h2 #{session.userName}
+        p
+          i.fa.fa-edit
+          strong  Role:
+          |  #{session.role}
+        p
+          i.fa.fa-envelope
+          strong  Email:
+          |  #{session.email}
+        p
+          i.fa.fa-address-card
+          strong  Account address:
+          |  #{session.accountAddress}
+        p
+          i.fa.fa-btc
+          strong  Account balance:
+          |  #{session.balance}

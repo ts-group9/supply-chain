@@ -30,6 +30,12 @@ app.route('/login')
   });
 });
 
+app.route('/profile')
+.get(function(req,res){
+  console.log(logPrefix+"API hit: GET /profile");
+  res.render('profile',{session:session});
+})
+
 app.route('/logout')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /logout");
@@ -104,9 +110,9 @@ var setSessionDetails = function(user){
   session['userName'] = user.name;
   session['role'] = roles[user.role];
   session['email'] = user.email;
-  session['accountAddress'] = user.walletAddress;
-  console.log(logPrefix + "Session[accountAddress] : " + session['accountAddress']);
-  console.log(logPrefix + "Session.accountAddress : " + session.accountAddress );
+  session['accountAddress'] = JSON.stringify(user.wallet.address);
+  session['balance'] = 2.015; //user.balance;
+
   console.log(logPrefix+"session:"+JSON.stringify(session));
 }
 
