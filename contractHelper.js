@@ -1,5 +1,4 @@
 const ethers = require('ethers');
-const fs = require('fs');
 var mongoHelper = require('./mongoHelper.js');
 
 var logPrefix = "contractHelper: ".red;
