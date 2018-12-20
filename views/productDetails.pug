@@ -28,14 +28,15 @@ block content
       table.table.table-hover.table-bordered
         thead
           tr
-            th Transaction id
+            th Transaction Details
             th Old owner
             th New owner
             th Updated On
         tbody
           each log in product.logs
             tr
-              td #{log.tx.hash}
+              td
+                a(href='https://ropsten.etherscan.io/tx/'+log.tx.hash) #{log.txLink}
               td #{log.oldOwnerEmail}
               td #{log.newOwnerEmail}
               td #{log.updateOn}

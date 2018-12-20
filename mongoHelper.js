@@ -57,7 +57,7 @@ exports.getAllProducts = function() {
     var collection = db.db('test').collection('products');
     return collection.find().toArray();
   }).then(function(products) {
-    console.log(logPrefix+"Products in mongo:"+JSON.stringify(products));
+    //console.log(logPrefix+"Products in mongo:"+JSON.stringify(products));
     return products;
   });
 }
@@ -98,7 +98,7 @@ exports.logTransferOwnership = function(oldOwnerEmail,newOwnerEmail,productId,tx
   log['newOwnerEmail'] = newOwnerEmail;
   log['tx'] = tx;
   log['updateOn'] = new Date();
-
+  log['txLink'] = tx.hash.substring(0,8);;
   var update = { $push: { logs: log } };
   var query = { productId:productId};
   mongoClient.connect(url,{useNewUrlParser: true},function(err,db){
@@ -112,5 +112,16 @@ exports.logTransferOwnership = function(oldOwnerEmail,newOwnerEmail,productId,tx
       console.log(logPrefix+"Product details inserted");
       db.close();
     });
+  });
+}
+
+exports.getLastProduct = function(productId){
+  return mongoClient.connect(url,{useNewUrlParser: true}).then(function(db){
+    console.log(logPrefix+'Connected to mongodb @ '+url);
+    var sortQuery = { _id:-1};
+    var collection = db.db('test').collection('products');
+    return collection.find().sort(sortQuery).limit(1).toArray();
+  }).then(function(product){
+    return product;
   });
 }

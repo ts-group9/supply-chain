@@ -89,7 +89,7 @@ app.route('/allProducts')
   // TODO: create getAllProduct() in contractHelper
   //var prods = productService.getAll();
   return productService.getAll().then(function(products){
-    console.log(logPrefix+"Products :: "+ JSON.stringify(products));
+    //console.log(logPrefix+"Products :: "+ JSON.stringify(products));
     res.render('products',{list:products,session:session});
   });
 });

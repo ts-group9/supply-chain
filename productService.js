@@ -12,16 +12,32 @@ var addProductDetailsFromDB = function(productId,product){
 
 var getProduct = function(productId){
   return contractHelper.getProduct(productId).then(function(product){
-    return addProductDetailsFromDB(productId,product);
+    return addProductDetailsFromDB(productId,product).then(function(mongoProduct){
+      return mongoProduct;
+    });
   });
 }
 
 var addProduct = function(address,req){
-  req['productId'] = Math.random().toString(36).substr(2);
-  req['addedOn'] = new Date();
-  mongoHelper.saveProduct(req);
-  //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
-  return contractHelper.addProduct(address,req.productId,req.productName);
+  return mongoHelper.getLastProduct().then(function(products){
+    var lastProduct = products[0];
+    if(lastProduct){
+      if(lastProduct.seq){
+        req['seq'] = lastProduct.seq+1;
+      }
+      else {
+        req['seq'] = 1001;
+      }
+    }else{
+      req['seq'] = 1001;
+    }
+    req['productId'] = "PR-"+req.seq;
+    req['addedOn'] = new Date();
+    req['logs'] = [];
+    mongoHelper.saveProduct(req);
+    //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
+    return contractHelper.addProduct(address,req.productId,req.productName);
+  });
 }
 
 var getAll = function(){
@@ -30,10 +46,12 @@ var getAll = function(){
   });
 }
 
-exports.addProduct = addProduct;
-  var verifyProduct = function(address,productId){
-  //var address = "3f505d300c0Bc0E0d313EC35f189ffE90cdF05ec";//JSON.stringify(user.wallet.address);
-  return contractHelper.verifyProduct(address,productId);
+var verifyProduct = function(address,productId){
+  return contractHelper.verifyProduct(address,productId).then(function(product){
+    return addProductDetailsFromDB(productId,product).then(function(mongoProduct){
+      return mongoProduct;
+    });
+  });
 }
 
 var transferOwnership = function(session,newOwnerEmail,productId){
@@ -44,6 +62,7 @@ var transferOwnership = function(session,newOwnerEmail,productId){
   });
 }
 
+exports.addProduct = addProduct;
 exports.addProduct = addProduct;
 exports.getAll = getAll;
 exports.verifyProduct = verifyProduct;
