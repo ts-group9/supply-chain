@@ -123,10 +123,11 @@ html
                 a(href='/getProduct')
                   i.fa.fa-fw.fa-search
                   |  Search product
-              li
-                a(href='/verifyProduct')
-                  i.fa.fa-fw.fa-table
-                  |  Verify Product
+              if(session.role=="Regulator")
+                li
+                  a(href='/verifyProduct')
+                    i.fa.fa-fw.fa-table
+                    |  Verify Product
               li
                 a(href='/transferOwnership')
                   i.fa.fa-fw.fa-briefcase
