@@ -140,7 +140,7 @@ app.route('/productDetails')
     if(detail != false)
       res.render('productDetails',{product:detail,session:session});
     else{
-      msg = "Product not found!"
+      let msg = "Product not found!"
       res.render('getProduct',{msg:msg,session:session});
     }
   });
@@ -158,10 +158,11 @@ app.route('/verifyProduct')
     console.log(logPrefix+"accountAddress - " + session.accountAddress);
     return productService.verifyProduct(session.accountAddress,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      if(detail)
+      if(detail){
         res.render('productDetails',{product:detail,session:session});
+      }
       else{
-        msg = "Product not found!"
+        let msg = "Product not found!"
         res.render('verifyProduct',{msg:msg,session:session});
       }
     });
@@ -186,7 +187,7 @@ app.route('/transferOwnership')
         res.render('productDetails',{product:detail,session:session});
       }
       else{
-        msg = "Product not found!"
+        let msg = "Product not found!"
         res.render('transferOwnership',{msg:msg,session:session});
       }
     });

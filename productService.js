@@ -17,9 +17,7 @@ var getProduct = function(productId){
   return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
     if(!mongoProduct) return false;
     return contractHelper.getProduct(productId).then(function(product){
-      return addProductDetailsFromDB(mongoProduct,product).then(function(mongoProduct){
-        return mongoProduct;
-      });
+      return addProductDetailsFromDB(mongoProduct,product);
     });
   });
 }
@@ -56,9 +54,7 @@ var verifyProduct = function(address,productId){
   return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
   if(!mongoProduct) return false;
     return contractHelper.verifyProduct(address,productId).then(function(product){
-      return addProductDetailsFromDB(mongoProduct,product).then(function(mongoProduct){
-        return mongoProduct;
-      });
+      return addProductDetailsFromDB(mongoProduct,product);
     });
   });
 }
