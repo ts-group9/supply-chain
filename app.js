@@ -136,7 +136,13 @@ app.route('/productDetails')
   console.log(logPrefix+"API hit: POST /productDetails");
   var productId = req.body.productId;
   return productService.getProduct(req.body.productId).then(function(detail){
-    res.render('productDetails',{product:detail,session:session});
+    console.log(logPrefix+"Detail:"+detail);
+    if(detail != false)
+      res.render('productDetails',{product:detail,session:session});
+    else{
+      msg = "Product not found!"
+      res.render('getProduct',{msg:msg,session:session});
+    }
   });
   });
 
@@ -152,9 +158,14 @@ app.route('/verifyProduct')
     console.log(logPrefix+"accountAddress - " + session.accountAddress);
     return productService.verifyProduct(session.accountAddress,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      res.render('productDetails',{product:detail,session:session});
+      if(detail)
+        res.render('productDetails',{product:detail,session:session});
+      else{
+        msg = "Product not found!"
+        res.render('verifyProduct',{msg:msg,session:session});
+      }
     });
-    });
+  });
 
 app.route('/transferOwnership')
   .get(function(req,res){
@@ -171,6 +182,12 @@ app.route('/transferOwnership')
     console.log(logPrefix+"API hit: POST /transferOwnership, req = " + JSON.stringify(req.body));
     return productService.transferOwnership(session,req.body.newOwner,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
-      res.render('productDetails',{product:detail,session:session});
+      if(detail){
+        res.render('productDetails',{product:detail,session:session});
+      }
+      else{
+        msg = "Product not found!"
+        res.render('transferOwnership',{msg:msg,session:session});
+      }
     });
   });

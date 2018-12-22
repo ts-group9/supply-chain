@@ -2,8 +2,7 @@ var userService = require('./userService.js');
 var contractHelper = require('./contractHelper.js');
 var mongoHelper = require('./mongoHelper.js')
 
-var addProductDetailsFromDB = function(productId,product){
-  return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
+var addProductDetailsFromDB = function(mongoProduct,product){
     if(product){
       mongoProduct['IsVerified'] = product.IsVerified;
       mongoProduct['ownerName'] = product.ownerName;
@@ -12,13 +11,15 @@ var addProductDetailsFromDB = function(productId,product){
       mongoProduct['ownerName'] = session.userName;
     }
     return mongoProduct;
-  });
 }
 
 var getProduct = function(productId){
-  return contractHelper.getProduct(productId).then(function(product){
-    return addProductDetailsFromDB(productId,product).then(function(mongoProduct){
-      return mongoProduct;
+  return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
+    if(!mongoProduct) return false;
+    return contractHelper.getProduct(productId).then(function(product){
+      return addProductDetailsFromDB(mongoProduct,product).then(function(mongoProduct){
+        return mongoProduct;
+      });
     });
   });
 }
@@ -52,17 +53,23 @@ var getAll = function(){
 }
 
 var verifyProduct = function(address,productId){
-  return contractHelper.verifyProduct(address,productId).then(function(product){
-    return addProductDetailsFromDB(productId,product).then(function(mongoProduct){
-      return mongoProduct;
+  return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
+  if(!mongoProduct) return false;
+    return contractHelper.verifyProduct(address,productId).then(function(product){
+      return addProductDetailsFromDB(mongoProduct,product).then(function(mongoProduct){
+        return mongoProduct;
+      });
     });
   });
 }
 
 var transferOwnership = function(session,newOwnerEmail,productId){
-  return userService.getUserFromEmail(newOwnerEmail).then(function(user){
-    return contractHelper.transferOwnership(session,productId,user).then(function(product){
-      return addProductDetailsFromDB(productId,product);
+  return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
+  if(!mongoProduct) return false;
+    return userService.getUserFromEmail(newOwnerEmail).then(function(user){
+      return contractHelper.transferOwnership(session,productId,user).then(function(product){
+        return addProductDetailsFromDB(mongoProduct,product);
+      });
     });
   });
 }
