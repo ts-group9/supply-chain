@@ -4,8 +4,13 @@ var mongoHelper = require('./mongoHelper.js')
 
 var addProductDetailsFromDB = function(productId,product){
   return mongoHelper.getProductDetails(productId).then(function(mongoProduct){
-    mongoProduct['IsVerified'] = product.IsVerified;
-    mongoProduct['ownerName'] = product.ownerName;
+    if(product){
+      mongoProduct['IsVerified'] = product.IsVerified;
+      mongoProduct['ownerName'] = product.ownerName;
+    }else{
+      mongoProduct['IsVerified'] = true;
+      mongoProduct['ownerName'] = session.userName;
+    }
     return mongoProduct;
   });
 }

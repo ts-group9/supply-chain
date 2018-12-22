@@ -118,11 +118,11 @@ html
               li
                 a(href='/addProduct')
                   i.fa.fa-fw.fa-plus
-                  |  Add product
+                  |  Add Product
               li
                 a(href='/getProduct')
                   i.fa.fa-fw.fa-search
-                  |  Search product
+                  |  Transaction Details
               if(session.role=="Regulator")
                 li
                   a(href='/verifyProduct')
@@ -133,14 +133,15 @@ html
                   i.fa.fa-fw.fa-briefcase
                   |  Transfer ownership
 
-        if msg
-          #custom-msg
-            .container-fluid
-              .row(style="background: white")
-                .col-sm-2
-                  p(style="color: red;font-size: 20px") #{msg}
         #page-wrapper
           div(style='height: 100%;')
+            if msg
+              .row
+                .col-lg-12
+                  .alert.alert-info.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    i.fa.fa-info-circle
+                    strong  #{msg}
             block content
 
 

@@ -46,6 +46,7 @@ app.route('/logout')
 app.route('/')
 .get(function(req,res){
   console.log(logPrefix+"API hit: GET /");
+  var msg = "Transaction id: 0x3aBd3F0A464CF784EDdd85544f1C0e3bba63c598"
   if(session.userName){
     res.render('index',{session:session})
   }else{
@@ -116,7 +117,6 @@ var setSessionDetails = function(user){
   session['email'] = user.email;
   session['accountAddress'] = user.wallet.address;
   session['balance'] = 1.618; //user.balance;
-
   console.log(logPrefix+"session:"+JSON.stringify(session));
 }
 
@@ -126,7 +126,7 @@ app.route('/products')
   console.log(logPrefix+"Product details:"+JSON.stringify(req.body));
   return productService.addProduct(session.accountAddress,req.body).then(function(txId){
     console.log(logPrefix + "Added Product!!");
-    var msg = "Last transaction id:"+JSON.stringify(txId.hash);
+    var msg = "Last transaction id: "+txId.hash;
     res.render('addProduct',{session:session,msg:msg});
   });
 });

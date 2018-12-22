@@ -86,7 +86,7 @@ exports.saveProduct = function(req){
       var dbo = db.db('test');
       dbo.collection("products").insertOne(req, function(err, res) {
         if (err) throw err;
-        console.log(logPrefix+"Product details inserted");
+        console.log(logPrefix+"Product details inserted:"+JSON.stringify(req));
         db.close();
       });
     });

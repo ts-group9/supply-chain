@@ -24,7 +24,6 @@ var addProduct = async function(userAddress,productId,productName){
   console.log(logPrefix+"Adding product; userAddress:"+userAddress+" productId:"+productId+" productName:"+productName);
   var tx = await contractWithSigner.addProduct(userAddress,productId,productName);
   console.log(logPrefix+"Tx:"+tx.hash);
-  await tx.wait();
 
   return tx;
 }
