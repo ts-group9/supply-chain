@@ -22,6 +22,10 @@ html
             a.navbar-brand(href='/') Group9
           // Top Menu Items
           ul.nav.navbar-right.top-nav
+            li
+              form(method='POST' action='/productDetails')
+                div.form-group
+                  input#productId.form-control(type='text', placeholder='Product id' name='productId',size='40')
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
                 i.fa.fa-envelope
