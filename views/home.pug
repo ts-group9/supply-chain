@@ -77,7 +77,15 @@ html(lang='en')
                             input#pw.form-control(type='password' name='password' placeholder='Password')
                         .modal-footer.d-flex.justify-content-center
                           button.btn.btn-primary(type='submit') Sign in
-
+    block content
+      if msg
+        .row
+          .col-lg-12
+            .alert.alert-info.alert-dismissable
+              button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+              i.fa.fa-info-circle
+              strong  #{msg}
+              
     .row(style=" padding-top:5rem;")
       .col-md-6.col-md-offset-1.vcenter.hcenter
         h2.display-2

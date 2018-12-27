@@ -25,7 +25,7 @@ app.route('/login')
       res.render('index',{session:session});
     }else{
       var msg = "Invalid username or password; please try again"
-      res.render('login',{session:session,msg:msg});
+      res.render('home',{session:session,msg:msg});
     }
   });
 });
@@ -159,6 +159,7 @@ app.route('/verifyProduct')
     return productService.verifyProduct(session.accountAddress,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
       if(detail){
+        detail.IsVerified = true;
         res.render('productDetails',{product:detail,session:session});
       }
       else{
@@ -184,7 +185,7 @@ app.route('/transferOwnership')
     return productService.transferOwnership(session,req.body.newOwner,req.body.productId).then(function(detail){
       console.log("details : " + JSON.stringify(detail))
       if(detail){
-        res.render('productDetails',{product:detail,session:session});
+        res.render('transferOwnership',{product:detail,session:session});
       }
       else{
         let msg = "Product not found!"
